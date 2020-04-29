@@ -1,19 +1,30 @@
+// import components
 import React from 'react';
 import Search from "./components/Search";
 import Navi from "./components/Navi";
 import PhotoList from "./components/PhotoList";
+import NotFound from "./components/NotFound";
+
+
+
 import "./config.js";
 import './css/index.css';
 import apiKey from './config.js';
+
+//import react router dom
 import {
   BrowserRouter,
   Switch,
-  Route,
-  Link
+  Route
+  
 } from "react-router-dom";
+
+
+
+//import axios
 import axios from 'axios';
 
-const API = apiKey;
+// declare the 3 default categories for the navs links
 const category1 = "dogs";
 const category2 = "anime";
 const category3 = "football";
@@ -25,11 +36,11 @@ class  App extends React.Component {
 
 
 
-
+// here my states 
 constructor() {
   super();
   this.state = {
-    gifs: [],
+    search: [],
     word: "",
     topic1: [],
     topic2: [],
@@ -39,7 +50,7 @@ constructor() {
 } 
 
 
-
+// call the Arrayfiller function to fill each default category
 componentDidMount () {
 
  
@@ -62,7 +73,7 @@ componentDidMount () {
 }
 
 
-
+// ArrayFiller function 
 ArrayFiller = (category,element) => {
 
   
@@ -96,7 +107,7 @@ UpdateSearch = (text) =>{
   axios(`https://www.flickr.com/services/rest/?method=flickr.photos.search&api_key=${apiKey}&tags=${text}&per_page=16&format=json&nojsoncallback=1&content_type=1`)
   .then(responseData => {
     
-    this.setState({gifs: responseData.data.photos.photo});
+    this.setState({search: responseData.data.photos.photo});
     
     
     
@@ -130,7 +141,8 @@ UpdateSearch = (text) =>{
                 <Route exact path ="/cars"         render={ () => <PhotoList  photos={this.state.topic1}  />} />
                 <Route exact path ="/anime"        render={ () => <PhotoList  photos={this.state.topic2}  />} />
                 <Route exact path ="/football"     render={ () => <PhotoList  photos={this.state.topic3}  />} />
-                <Route exact path ="/search/:word" render={ () => <PhotoList  photos={this.state.gifs}    />} /> 
+                <Route exact path ="/search/:word" render={ () => <PhotoList  photos={this.state.search}    />} /> 
+                <Route                          component={NotFound}                                          />
                 
                 
                 
